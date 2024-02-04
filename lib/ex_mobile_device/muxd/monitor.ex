@@ -26,6 +26,11 @@ defmodule ExMobileDevice.Muxd.Monitor do
     :ets.lookup_element(__MODULE__, udid, 2, nil)
   end
 
+  @spec get_location_id(binary) :: integer() | nil
+  def get_location_id(udid) do
+    :ets.lookup_element(__MODULE__, udid, 3, nil)
+  end
+
   typedstruct do
     field(:addr, any())
     field(:port, non_neg_integer(), default: 0)
@@ -49,7 +54,7 @@ defmodule ExMobileDevice.Muxd.Monitor do
     case Socket.connect(data.addr, data.port) do
       {:ok, socket} ->
         with :ok <- Socket.request_events(socket, 1),
-             :ok = :inet.setopts(socket, active: :once) do
+             :ok <- :inet.setopts(socket, active: :once) do
           EventManager.notify({:exmobiledevice, :connected})
           {:next_state, :connected, %__MODULE__{data | muxd: socket}}
         else
@@ -85,8 +90,9 @@ defmodule ExMobileDevice.Muxd.Monitor do
         %{"MessageType" => "Attached", "DeviceID" => device_id, "Properties" => props} ->
           if props["ConnectionType"] == "USB" do
             serial = props["SerialNumber"]
+            location_id = props["LocationID"]
             EventManager.notify({:exmobiledevice, {:device_attached, serial}})
-            :ets.insert(__MODULE__, {serial, device_id})
+            :ets.insert(__MODULE__, {serial, device_id, location_id})
             Map.put(data.devices, device_id, serial)
           else
             data.devices

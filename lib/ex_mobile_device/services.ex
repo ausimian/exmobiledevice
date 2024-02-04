@@ -13,7 +13,7 @@ defmodule ExMobileDevice.Services do
          {:ok, prec} <- Muxd.get_pair_record(muxd, udid),
          {:ok, sock} <- Muxd.connect_thru(muxd, udid, port),
          {:ok, ssl_sock} <- ExMobileDevice.Ssl.connect(sock, prec),
-         :ok = :ssl.setopts(ssl_sock, packet: 4) do
+         :ok <- :ssl.setopts(ssl_sock, packet: 4) do
       {:ok, ssl_sock}
     end
   end

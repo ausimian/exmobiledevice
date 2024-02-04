@@ -1,10 +1,13 @@
 defmodule ExMobileDevice.Services.Lockdown do
+  @moduledoc false
   use GenStateMachine, restart: :temporary
   use TypedStruct
 
   alias ExMobileDevice.Muxd
   alias ExMobileDevice.Services
   require Logger
+
+  @lockdown_port 62_078
 
   def start_link(args) do
     GenStateMachine.start_link(__MODULE__, args)
@@ -50,7 +53,7 @@ defmodule ExMobileDevice.Services.Lockdown do
 
     with {:ok, muxd} <- Muxd.connect(),
          {:ok, prec} <- maybe_get_pair_record(muxd, udid),
-         {:ok, sock} <- Muxd.connect_thru(muxd, udid, 62078) do
+         {:ok, sock} <- Muxd.connect_thru(muxd, udid, @lockdown_port) do
       :ok = :inet.setopts(sock, packet: 4)
 
       ref = Process.monitor(proc)
@@ -61,7 +64,7 @@ defmodule ExMobileDevice.Services.Lockdown do
   @impl true
   def handle_event({:call, from}, {:get_value, props}, _, %__MODULE__{} = data) do
     reply =
-      with {:ok, response} = Services.rpc(sock(data), "GetValue", props) do
+      with {:ok, response} <- Services.rpc(sock(data), "GetValue", props) do
         {:ok, response["Value"]}
       end
 

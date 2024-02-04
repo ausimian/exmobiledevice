@@ -1,23 +1,38 @@
 defmodule ExMobileDevice.Diagnostics do
-  @moduledoc false
+  @moduledoc """
+  Services for shutting down or restarting a device.
+  """
 
   alias ExMobileDevice.TaskSupervisor
   alias ExMobileDevice.Services
 
   @diagnostics "com.apple.mobile.diagnostics_relay"
 
+  @doc """
+  Restart the specified device.
+  """
+  @spec restart(String.t()) :: :ok | {:error, any}
   def restart(udid) do
     run_in_task(udid, "Restart")
   end
 
+  @doc """
+  Shutdown the specified device.
+  """
+  @spec shutdown(String.t()) :: :ok | {:error, any}
   def shutdown(udid) do
     run_in_task(udid, "Shutdown")
   end
 
+  @doc """
+  Send the specified device to sleep.
+  """
+  @spec sleep(String.t()) :: :ok | {:error, any}
   def sleep(udid) do
     run_in_task(udid, "Sleep")
   end
 
+  @doc false
   def ioreg(udid, opts \\ []) do
     args =
       opts

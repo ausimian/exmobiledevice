@@ -1,4 +1,5 @@
 defmodule ExMobileDevice.Services.Supervisor do
+  @moduledoc false
   use DynamicSupervisor
 
   @spec start_link(any) :: Supervisor.on_start()

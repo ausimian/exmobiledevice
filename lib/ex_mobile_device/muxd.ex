@@ -88,7 +88,6 @@ defmodule ExMobileDevice.Muxd do
   This process may be used to:
 
   - Retrieve pairing records from `usbmuxd`. See `get_pair_record/2`.
-  - Start other services on the device
   - Connect to other services on the device. See `connect_thru/3`.
 
   ## Example
@@ -134,7 +133,7 @@ defmodule ExMobileDevice.Muxd do
   ## Example
       iex(1)> {:ok, conn} = ExMobileDevice.Muxd.connect()
       {:ok, #PID<0.200.0>}
-      iex(2)> {:ok, sock} = ExMobileDevice.Muxd.connect_thru(conn, "00008110-00180C36263B801E", 62078) # lockdownd
+      iex(2)> {:ok, sock} = ExMobileDevice.Muxd.connect_thru(conn, "00008120-0018DEADC0DEFACE", 62078) # lockdownd
       {:ok, #Port<0.4>}
       iex(3)> Process.alive?(conn)
       false
@@ -143,5 +142,26 @@ defmodule ExMobileDevice.Muxd do
           {:ok, port()} | {:error, any()}
   def connect_thru(conn, udid, port) do
     Connection.connect_thru(conn, udid, port)
+  end
+
+  @doc """
+  Returns the _platform-dependent_ 'location id' of the specified
+  device, or `nil` if no such device is attached.
+
+  On Linux, the 32-bit integer returned is composed of the USB
+  bus number (high 16 bits) and USB device number (low 16 bits).
+  On OSX, the integer can be used to form a name that can be used
+  to find the device vis the IORegistry.
+
+  This function can be useful when locating the device in the host's
+  device tree.
+
+  ## Example
+      iex(1)> ExMobileDevice.Muxd.get_location_id("00008120-0018DEADC0DEFACE")
+      1048576
+  """
+  @spec get_location_id(String.t()) :: integer() | nil
+  def get_location_id(udid) do
+    Monitor.get_location_id(udid)
   end
 end
