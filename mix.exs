@@ -7,7 +7,14 @@ defmodule ExMobileDevice.MixProject do
       version: "0.1.0",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+
+      # Docs
+      name: "ExMobileDevice",
+      source_url: "https://github.com/ausimian/exmobildevice",
+      docs: [
+        extras: ["README.md"]
+      ]
     ]
   end
 
