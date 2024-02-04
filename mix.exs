@@ -11,7 +11,7 @@ defmodule ExMobileDevice.MixProject do
 
       # Docs
       name: "ExMobileDevice",
-      source_url: "https://github.com/ausimian/exmobildevice",
+      source_url: "https://github.com/ausimian/exmobiledevice",
       docs: [
         extras: ["README.md"]
       ]
