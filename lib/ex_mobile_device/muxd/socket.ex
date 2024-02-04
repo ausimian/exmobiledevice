@@ -90,10 +90,7 @@ defmodule ExMobileDevice.Muxd.Socket do
       tag::little-32
     >>
 
-    request =
-      """
-      <plist><dictionary><key>MessageType</key><string>ReadBUID</string></dictionary></plist>
-      """
+    request = ExMobileDevice.Plist.encode(%{"MessageType" => "ReadBUID"})
 
     msg = [header, request]
     data = [<<4 + IO.iodata_length(msg)::little-32>> | msg]

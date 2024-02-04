@@ -84,7 +84,6 @@ defmodule ExMobileDevice.Muxd.Monitor do
       case msg do
         %{"MessageType" => "Attached", "DeviceID" => device_id, "Properties" => props} ->
           if props["ConnectionType"] == "USB" do
-            IO.inspect(msg)
             serial = props["SerialNumber"]
             EventManager.notify({:exmobiledevice, {:device_attached, serial}})
             :ets.insert(__MODULE__, {serial, device_id})
