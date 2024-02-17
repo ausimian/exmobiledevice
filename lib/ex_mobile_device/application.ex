@@ -8,8 +8,10 @@ defmodule ExMobileDevice.Application do
   def start(_type, _args) do
     children = [
       {ExMobileDevice.TaskSupervisor, []},
-      {ExMobileDevice.Services.Supervisor, []},
-      {ExMobileDevice.Muxd.Supervisor, Application.get_env(:exmobiledevice, ExMobileDevice.Muxd)}
+      {Registry, name: ExMobileDevice.Registry, keys: :unique},
+      {ExMobileDevice.Muxd.Supervisor, Application.get_env(:exmobiledevice, ExMobileDevice.Muxd)},
+      {DynamicSupervisor, name: ExMobileDevice.Lockdown.Supervisor, strategy: :one_for_one},
+      {DynamicSupervisor, name: ExMobileDevice.WebInspector.Supervisor, strategy: :one_for_one}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -4,14 +4,15 @@ An OTP application to talk to iPhones via `usbmuxd` on OSX and Linux.
 
 Current functionality is minimal but includes:
 
-- Device enumeration and notification of attach/detach
-- Retrieval of device configuration
-- Device reboot and shutdown
-- Syslog streaming
+- Device enumeration and notification of attach/detach (`ExMobileDevice.Muxd`)
+- Retrieval of device configuration (`ExMobileDevice.Lockdown`)
+- Device reboot and shutdown (`ExMobileDevice.Diagnostics`)
+- Syslog streaming (`ExMobileDevice.Syslog`)
+- WebInspector support - automate browsing sessions without SafariDriver -
+  (`ExMobileDevice.WebInspector`)
 
 Planned for future releases:
 
-- WebInspector support (automate browsing sessions without SafariDriver)
 - Application management (install, run)
 - Device pairing
 
@@ -25,7 +26,7 @@ by adding `exmobiledevice` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:exmobiledevice, "~> 0.1.0"}
+    {:exmobiledevice, "~> 0.2.0"}
   ]
 end
 ```
