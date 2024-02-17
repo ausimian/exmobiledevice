@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 - 2024-02-17
+
+### Fixes
+
+  * Fix root page in docs
+
 ## 0.2.0 - 2024-02-17
 
 ### Enhancements
