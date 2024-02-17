@@ -37,8 +37,9 @@ defmodule ExMobileDevice.MixProject do
 
   defp docs do
     [
-      main: "README",
-      source_ref: "v#{Mix.Project.config()[:version]}",
+      main: "readme",
+      source_ref: "#{Mix.Project.config()[:version]}",
+      source_url: "https://github.com/ausimian/exmobiledevice",
       logo: "assets/exmobiledevice.png",
       extras: [
         "README.md",
