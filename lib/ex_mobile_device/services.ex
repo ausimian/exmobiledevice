@@ -5,10 +5,12 @@ defmodule ExMobileDevice.Services do
   alias ExMobileDevice.Muxd
   alias ExMobileDevice.Lockdown
 
+  @spec connect(String.t(), String.t()) :: {:ok, :ssl.sslsocket()} | {:error, any()}
   def connect(udid, service) do
     with {:ok, ldown} <- Lockdown.connect(udid),
          :ok <- Lockdown.start_session(ldown),
          {:ok, %{port: port, ssl: true}} <- Lockdown.start_service(ldown, service),
+         :ok <- Lockdown.close(ldown),
          {:ok, muxd} <- Muxd.connect(),
          {:ok, prec} <- Muxd.get_pair_record(muxd, udid),
          {:ok, sock} <- Muxd.connect_thru(muxd, udid, port),
