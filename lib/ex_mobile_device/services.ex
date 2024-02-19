@@ -9,14 +9,34 @@ defmodule ExMobileDevice.Services do
   def connect(udid, service) do
     with {:ok, ldown} <- Lockdown.connect(udid),
          :ok <- Lockdown.start_session(ldown),
-         {:ok, %{port: port, ssl: true}} <- Lockdown.start_service(ldown, service),
+         {:ok, %{port: port} = info} <- Lockdown.start_service(ldown, service),
          :ok <- Lockdown.close(ldown),
          {:ok, muxd} <- Muxd.connect(),
          {:ok, prec} <- Muxd.get_pair_record(muxd, udid),
-         {:ok, sock} <- Muxd.connect_thru(muxd, udid, port),
-         {:ok, ssl_sock} <- ExMobileDevice.Ssl.connect(sock, prec),
-         :ok <- :ssl.setopts(ssl_sock, packet: 4) do
-      {:ok, ssl_sock}
+         {:ok, sock} <- Muxd.connect_thru(muxd, udid, port) do
+      if info[:ssl] do
+        with {:ok, ssl_sock} <- ExMobileDevice.Ssl.connect(sock, prec),
+             :ok <- :ssl.setopts(ssl_sock, packet: 4) do
+          {:ok, ssl_sock}
+        end
+      else
+        {:ok, sock}
+      end
+    end
+  end
+
+  def rpc(socket, request) do
+    plist =
+      [
+        ~s(<?xml version="1.0" encoding="UTF-8"?>),
+        ?\n,
+        ~s(<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">),
+        ?\n,
+        ExMobileDevice.Plist.encode(request)
+      ]
+
+    with {:ok, reply} <- send_and_receive(socket, plist) do
+      {:ok, Plist.decode(reply)}
     end
   end
 
