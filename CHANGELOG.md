@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2 - 2024-02-20
+
+### Fixes
+
+  * Fix default configuration
+
 ## 0.2.1 - 2024-02-17
 
 ### Fixes
