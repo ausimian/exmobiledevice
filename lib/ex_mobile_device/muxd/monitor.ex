@@ -41,8 +41,9 @@ defmodule ExMobileDevice.Muxd.Monitor do
 
   @impl true
   def init(args) do
-    addr = Keyword.fetch!(args, :addr)
-    port = Keyword.fetch!(args, :port)
+    addr = Keyword.get(args, :addr, ExMobileDevice.Muxd.Connection.default_addr())
+    port = Keyword.get(args, :port, ExMobileDevice.Muxd.Connection.default_port())
+
     data = %__MODULE__{addr: addr, port: port}
 
     :ets.new(__MODULE__, [:named_table])

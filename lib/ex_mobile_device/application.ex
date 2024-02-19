@@ -6,10 +6,12 @@ defmodule ExMobileDevice.Application do
 
   @impl true
   def start(_type, _args) do
+    muxd_config = Application.get_env(:exmobiledevice, ExMobileDevice.Muxd, [])
+
     children = [
       {ExMobileDevice.TaskSupervisor, []},
       {Registry, name: ExMobileDevice.Registry, keys: :unique},
-      {ExMobileDevice.Muxd.Supervisor, Application.get_env(:exmobiledevice, ExMobileDevice.Muxd)},
+      {ExMobileDevice.Muxd.Supervisor, muxd_config},
       {DynamicSupervisor, name: ExMobileDevice.Lockdown.Supervisor, strategy: :one_for_one},
       {DynamicSupervisor, name: ExMobileDevice.WebInspector.Supervisor, strategy: :one_for_one}
     ]

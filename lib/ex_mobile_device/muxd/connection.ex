@@ -5,6 +5,9 @@ defmodule ExMobileDevice.Muxd.Connection do
 
   alias ExMobileDevice.Muxd.Socket
 
+  def default_addr(), do: {:local, "/var/run/usbmuxd"}
+  def default_port(), do: 0
+
   @spec start_link(Keyword.t()) :: GenStateMachine.on_start()
   def start_link(args) do
     GenStateMachine.start_link(__MODULE__, args)
@@ -34,8 +37,8 @@ defmodule ExMobileDevice.Muxd.Connection do
 
   @impl true
   def init(args) do
-    addr = Keyword.fetch!(args, :addr)
-    port = Keyword.fetch!(args, :port)
+    addr = Keyword.get(args, :addr, default_addr())
+    port = Keyword.get(args, :port, default_port())
     proc = Keyword.fetch!(args, :controlling_process)
 
     case Socket.connect(addr, port) do
