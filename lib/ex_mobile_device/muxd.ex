@@ -96,9 +96,7 @@ defmodule ExMobileDevice.Muxd do
   """
   @spec connect() :: DynamicSupervisor.on_start_child()
   def connect() do
-    Application.get_env(:exmobiledevice, ExMobileDevice.Muxd)
-    |> Keyword.put(:controlling_process, self())
-    |> ConnectionSupervisor.start_connection()
+    ConnectionSupervisor.start_connection(controlling_process: self())
   end
 
   @doc """

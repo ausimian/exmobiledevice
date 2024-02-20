@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.3 - 2024-02-20
+
+### Fixes
+
+  * Fix call to ExMobileDevice.Muxd.connect/0
+
 ## 0.2.2 - 2024-02-20
 
 ### Fixes
