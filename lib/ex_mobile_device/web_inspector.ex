@@ -58,7 +58,7 @@ defmodule ExMobileDevice.WebInspector do
   Transfers controlling ownership of `pid` to `cp`. The caller must be the
   current owner.
   """
-  @spec set_controlling_process(pid(), pid()) :: :ok | {:error, any()}
+  @spec set_controlling_process(:gen_statem.server_ref(), pid()) :: :ok | {:error, any()}
   def set_controlling_process(pid, cp) when is_pid(cp) do
     GenStateMachine.call(pid, {:set_cp, cp})
   end
@@ -66,7 +66,8 @@ defmodule ExMobileDevice.WebInspector do
   @doc """
   Create a new automation page.
   """
-  @spec create_page(pid()) :: {:ok, String.t()} | {:error, any()}
+  @spec create_page(:gen_statem.server_ref()) :: {:ok, String.t()} | {:error, any()}
+
   def create_page(pid) do
     GenStateMachine.call(pid, :create_page)
   end
@@ -74,7 +75,7 @@ defmodule ExMobileDevice.WebInspector do
   @doc """
   List the current automation pages.
   """
-  @spec list_pages(pid()) :: {:ok, list(map())} | {:error, any()}
+  @spec list_pages(:gen_statem.server_ref()) :: {:ok, list(map())} | {:error, any()}
   def list_pages(pid) do
     GenStateMachine.call(pid, :list_pages)
   end
@@ -82,7 +83,7 @@ defmodule ExMobileDevice.WebInspector do
   @doc """
   Switch to the specified page.
   """
-  @spec switch_to_page(pid(), String.t()) :: :ok | {:error, any()}
+  @spec switch_to_page(:gen_statem.server_ref(), String.t()) :: :ok | {:error, any()}
   def switch_to_page(pid, page) do
     GenStateMachine.call(pid, {:switch_to_page, page})
   end
@@ -94,7 +95,8 @@ defmodule ExMobileDevice.WebInspector do
 
   - `timeout`: The page-load timeout in milliseconds. Defaults to 30_000 (30 seconds)
   """
-  @spec navigate_to(pid(), String.t(), String.t(), Keyword.t()) :: :ok | {:error, any()}
+  @spec navigate_to(:gen_statem.server_ref(), String.t(), String.t(), Keyword.t()) ::
+          :ok | {:error, any()}
   def navigate_to(pid, page, url, opts \\ []) do
     GenStateMachine.call(pid, {:navigate_to, page, url, opts})
   end
@@ -102,7 +104,7 @@ defmodule ExMobileDevice.WebInspector do
   @doc """
   Go to the previous url in the page's history.
   """
-  @spec go_back(pid(), String.t()) :: :ok | {:error, any()}
+  @spec go_back(:gen_statem.server_ref(), String.t()) :: :ok | {:error, any()}
   def go_back(pid, page) do
     GenStateMachine.call(pid, {:go_back, page})
   end
@@ -110,7 +112,7 @@ defmodule ExMobileDevice.WebInspector do
   @doc """
   Go to the next url in the page's history.
   """
-  @spec go_forward(pid(), String.t()) :: :ok | {:error, any()}
+  @spec go_forward(:gen_statem.server_ref(), String.t()) :: :ok | {:error, any()}
   def go_forward(pid, page) do
     GenStateMachine.call(pid, {:go_forward, page})
   end
@@ -118,7 +120,7 @@ defmodule ExMobileDevice.WebInspector do
   @doc """
   Reload the page's current url.
   """
-  @spec reload(pid(), String.t()) :: :ok | {:error, any()}
+  @spec reload(:gen_statem.server_ref(), String.t()) :: :ok | {:error, any()}
   def reload(pid, page) do
     GenStateMachine.call(pid, {:reload, page})
   end
@@ -126,7 +128,7 @@ defmodule ExMobileDevice.WebInspector do
   @doc """
   Take a screenshot of the current page, returning the bytes in PNG format.
   """
-  @spec take_screenshot(pid(), String.t()) :: {:ok, binary()} | {:error, any()}
+  @spec take_screenshot(:gen_statem.server_ref(), String.t()) :: {:ok, binary()} | {:error, any()}
   def take_screenshot(pid, page) do
     GenStateMachine.call(pid, {:take_screenshot, page})
   end
@@ -134,7 +136,7 @@ defmodule ExMobileDevice.WebInspector do
   @doc """
   Close the specified page.
   """
-  @spec close_page(pid(), String.t()) :: :ok | {:error, any()}
+  @spec close_page(:gen_statem.server_ref(), String.t()) :: :ok | {:error, any()}
   def close_page(pid, page) do
     GenStateMachine.call(pid, {:close_page, page})
   end
@@ -234,17 +236,15 @@ defmodule ExMobileDevice.WebInspector do
   #
   # Handle api calls
   #
-  def handle_event({:call, {caller, _} = from}, _, _, %__MODULE__{cp_pid: cp})
-      when caller != cp do
-    # All calls must come from the controlling process
-    {:keep_state_and_data, {:reply, from, {:error, :not_controlling_process}}}
-  end
-
-  def handle_event({:call, from}, {:set_cp, cp}, _, %__MODULE__{} = data) do
-    # The controlling process can transfer control to another process
-    mref = Process.monitor(cp)
-    Process.demonitor(data.cp_mref, [:flush])
-    {:keep_state, %__MODULE__{data | cp_pid: cp, cp_mref: mref}, {:reply, from, :ok}}
+  def handle_event({:call, {caller, _} = from}, {:set_cp, cp}, _, %__MODULE__{} = data) do
+    if caller == data.cp_pid do
+      # The controlling process can transfer control to another process
+      mref = Process.monitor(cp)
+      Process.demonitor(data.cp_mref, [:flush])
+      {:keep_state, %__MODULE__{data | cp_pid: cp, cp_mref: mref}, {:reply, from, :ok}}
+    else
+      {:keep_state_and_data, {:reply, from, {:error, :not_controlling_process}}}
+    end
   end
 
   def handle_event({:call, from}, _, :failed, %__MODULE__{}) do

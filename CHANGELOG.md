@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.5 - 2024-02-22
+
+### Fixes
+
+  * Fix controlling process handling
+
 ## 0.2.4 - 2024-02-22
 
 ### Fixes
