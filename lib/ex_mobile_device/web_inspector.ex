@@ -379,7 +379,11 @@ defmodule ExMobileDevice.WebInspector do
         end
 
       :initialized ->
-        {:keep_state_and_data, :postpone}
+        if data.safari[@wirAutomationAvailabilityKey] == @wirAutomationAvailable do
+          {:next_state, :ready, data, :postpone}
+        else
+          {:next_state, :failed, data}
+        end
 
       :ready ->
         next_event = [{:next_event, :internal, :start_automation_session}]
