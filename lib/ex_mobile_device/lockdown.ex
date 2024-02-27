@@ -213,7 +213,8 @@ defmodule ExMobileDevice.Lockdown do
       args = Map.merge(%{"Service" => service}, Map.take(data.prec, keys))
 
       case Services.rpc(sock(data), "StartService", args) do
-        {:ok, %{"Service" => ^service, "EnableServiceSSL" => ssl?, "Port" => port}} ->
+        {:ok, %{"Service" => ^service, "Port" => port} = reply} ->
+          ssl? = !!reply["EnableServiceSSL"]
           {:keep_state_and_data, {:reply, from, {:ok, %{port: port, ssl: ssl?}}}}
 
         {:ok, %{"Error" => error}} ->

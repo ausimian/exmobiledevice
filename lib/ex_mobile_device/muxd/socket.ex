@@ -96,11 +96,9 @@ defmodule ExMobileDevice.Muxd.Socket do
     data = [<<4 + IO.iodata_length(msg)::little-32>> | msg]
 
     with :ok <- :gen_tcp.send(socket, data),
-         {:ok, reply} <- :gen_tcp.recv(socket, 0) do
-      <<size::little-32, version::little-32, @msgtype_plist::little-32, ^tag::little-32,
-        _::binary-size(size - 16)>> = reply
-
-      {:ok, version}
+         {:ok, <<size::little-32, vsn::little-32, _::64>>} <- :gen_tcp.recv(socket, 16),
+         {:ok, _} <- :gen_tcp.recv(socket, size - 16) do
+      {:ok, vsn}
     end
   end
 end
