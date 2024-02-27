@@ -64,10 +64,24 @@ defmodule ExMobileDevice.WebInspector do
   end
 
   @doc """
+  Wait for the session to be created.
+  """
+  @spec wait_for_session(pid, non_neg_integer() | :infinity) :: :ok | {:error, :failed | :timeout}
+  def wait_for_session(pid, timeout \\ 5000) do
+    deadline =
+      if timeout == :infinity do
+        timeout
+      else
+        :erlang.monotonic_time(:millisecond) + timeout
+      end
+
+    GenStateMachine.call(pid, {:wait_for_session, deadline})
+  end
+
+  @doc """
   Create a new automation page.
   """
   @spec create_page(:gen_statem.server_ref()) :: {:ok, String.t()} | {:error, any()}
-
   def create_page(pid) do
     GenStateMachine.call(pid, :create_page)
   end
@@ -358,6 +372,27 @@ defmodule ExMobileDevice.WebInspector do
     end)
   end
 
+  def handle_event({:call, from}, {:wait_for_session, _}, :connected, _) do
+    {:keep_state_and_data, {:reply, from, :ok}}
+  end
+
+  def handle_event({:call, from}, {:wait_for_session, _}, :failed, _) do
+    {:keep_state_and_data, {:reply, from, {:error, :failed}}}
+  end
+
+  def handle_event({:call, _from}, {:wait_for_session, :infinity}, _, _) do
+    {:keep_state_and_data, :postpone}
+  end
+
+  def handle_event({:call, from}, {:wait_for_session, deadline}, _, _) do
+    next_events = [
+      :postpone,
+      {{:timeout, {:wait_for_session, from}}, deadline, nil, [abs: true]}
+    ]
+
+    {:keep_state_and_data, next_events}
+  end
+
   #
   # Event handling
   #
@@ -502,6 +537,10 @@ defmodule ExMobileDevice.WebInspector do
 
   def handle_event(:info, {:DOWN, ref, :process, _, _}, _, %__MODULE__{cp_mref: ref}) do
     {:stop, :shutdown}
+  end
+
+  def handle_event({:timeout, {:wait_for_session, from}}, _, _, _) do
+    {:keep_state_and_data, {:reply, from, {:error, :timeout}}}
   end
 
   #

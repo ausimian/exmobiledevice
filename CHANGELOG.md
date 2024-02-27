@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.6 - 2024-02-27
+
+### Enhancements
+
+  * Add DDI mounting support
+
+### Fixes
+
+  * Fix muxd framing issue
+
 ## 0.2.5 - 2024-02-22
 
 ### Fixes
