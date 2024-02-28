@@ -401,23 +401,20 @@ defmodule ExMobileDevice.WebInspector do
       :created ->
         {:keep_state_and_data, :postpone}
 
-      :initialized when is_nil(data.safari) ->
-        # Start safari if it is not already started
-        bundle_key = %{@wirApplicationBundleIdentifierKey => @bundle}
-
-        case send_msg(data.ssl_sock, data.session_id, @rpcRequestApplicationLaunch, bundle_key) do
-          :ok ->
-            {:keep_state_and_data, :postpone}
-
-          _error ->
-            {:next_state, :failed, data}
-        end
-
       :initialized ->
-        if data.safari[@wirAutomationAvailabilityKey] == @wirAutomationAvailable do
-          {:next_state, :ready, data, :postpone}
+        if get_in(data.safari, [@wirAutomationAvailabilityKey]) == @wirAutomationAvailable do
+          {:keep_state_and_data, :postpone}
         else
-          {:next_state, :failed, data}
+          # Start safari if it is not already started
+          bundle_key = %{@wirApplicationBundleIdentifierKey => @bundle}
+
+          case send_msg(data.ssl_sock, data.session_id, @rpcRequestApplicationLaunch, bundle_key) do
+            :ok ->
+              {:keep_state_and_data, :postpone}
+
+            _error ->
+              {:next_state, :failed, data}
+          end
         end
 
       :ready ->
