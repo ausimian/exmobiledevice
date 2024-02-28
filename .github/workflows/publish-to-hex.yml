@@ -11,6 +11,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: hex.pm publish - Elixir 1.14
-        uses: HypeRate/action-publish-hex@v1
+        uses: HypeRate/action-publish-hex@v2
         env:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}

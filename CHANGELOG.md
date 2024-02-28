@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.9 - 2024-02-28
+
+### Fixes
+
+  * More github action shenanighans
+
 ## 0.2.8 - 2024-02-28
 
 ### Fixes
