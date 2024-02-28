@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.7 - 2024-02-28
+
+### Fixes
+
+  * Publish from github
+
+
 ## 0.2.6 - 2024-02-27
 
 ### Enhancements
