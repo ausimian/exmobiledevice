@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.8 - 2024-02-28
+
+### Fixes
+
+  * Switch to more recent action
+
+
 ## 0.2.7 - 2024-02-28
 
 ### Fixes
