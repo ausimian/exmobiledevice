@@ -5,7 +5,7 @@ defmodule ExMobileDevice.MixProject do
     [
       app: :exmobiledevice,
       description: "iDevice control via usbmuxd",
-      version: "0.2.6",
+      version: "0.2.7",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
