@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.10 - 2024-03-01
+
+### Fixes
+
+  * Drop unhandled (pairing) messages from usbmuxd
+  * Improve web-inspector state machine
+
 ## 0.2.9 - 2024-02-28
 
 ### Fixes
