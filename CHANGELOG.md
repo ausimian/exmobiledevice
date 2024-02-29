@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.11 - 2024-03-05
+
+### Enhancements
+
+  * Support for copying and clearing crash logs
+
 ## 0.2.10 - 2024-03-01
 
 ### Fixes

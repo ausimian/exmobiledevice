@@ -13,7 +13,8 @@ defmodule ExMobileDevice.Application do
       {Registry, name: ExMobileDevice.Registry, keys: :unique},
       {ExMobileDevice.Muxd.Supervisor, muxd_config},
       {DynamicSupervisor, name: ExMobileDevice.Lockdown.Supervisor, strategy: :one_for_one},
-      {DynamicSupervisor, name: ExMobileDevice.WebInspector.Supervisor, strategy: :one_for_one}
+      {DynamicSupervisor, name: ExMobileDevice.WebInspector.Supervisor, strategy: :one_for_one},
+      {DynamicSupervisor, name: ExMobileDevice.FileConduit.Supervisor, strategy: :one_for_one}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

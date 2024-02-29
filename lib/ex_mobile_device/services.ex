@@ -46,6 +46,22 @@ defmodule ExMobileDevice.Services do
     end
   end
 
+  def send_plist(socket, request) do
+    send_data(socket, ExMobileDevice.Plist.encode(request))
+  end
+
+  def recv_plist(socket) do
+    with {:ok, data} <- recv_data(socket) do
+      {:ok, Plist.decode(data)}
+    end
+  end
+
+  defp send_data(sock, request) when is_port(sock), do: :gen_tcp.send(sock, request)
+  defp send_data(sock, request) when is_tuple(sock), do: :ssl.send(sock, request)
+
+  defp recv_data(sock) when is_port(sock), do: :gen_tcp.recv(sock, 0)
+  defp recv_data(sock) when is_tuple(sock), do: :ssl.recv(sock, 0)
+
   defp send_and_receive(sock, data) when is_port(sock) do
     with :ok <- :gen_tcp.send(sock, data) do
       :gen_tcp.recv(sock, 0)
