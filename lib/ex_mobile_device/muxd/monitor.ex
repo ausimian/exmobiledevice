@@ -108,6 +108,9 @@ defmodule ExMobileDevice.Muxd.Monitor do
           end
 
           updated
+
+        _ ->
+          data.devices
       end
 
     {:keep_state, %__MODULE__{data | devices: devices}}
