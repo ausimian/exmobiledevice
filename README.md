@@ -10,6 +10,7 @@ Current functionality is minimal but includes:
 - Syslog streaming (`ExMobileDevice.Syslog`)
 - WebInspector support - automate browsing sessions without SafariDriver -
   (`ExMobileDevice.WebInspector`)
+- Crash log copying and removal - (`ExMobileDevice.CrashReporter`)
 
 Planned for future releases:
 
@@ -26,7 +27,7 @@ by adding `exmobiledevice` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:exmobiledevice, "~> 0.2.0"}
+    {:exmobiledevice, "~> 0.2.11"}
   ]
 end
 ```
