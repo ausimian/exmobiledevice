@@ -39,6 +39,33 @@ defmodule ExMobileDevice.ImageMounter do
   end
 
   @doc """
+  Mount a developer disk for a pre-iOS17 device.
+  """
+  @spec mount(String.t(), Path.t(), Path.t()) :: :ok | {:error, any()}
+  def mount(udid, image_path, sig_path) do
+    result =
+      run_in_task(fn ->
+        with {:ok, image} <- File.read(image_path),
+             {:ok, signature} <- File.read(sig_path),
+             {:ok, ssl_sock} <- Services.connect(udid, @service),
+             :ok <- upload_image(ssl_sock, "DeveloperDiskImage", image, signature) do
+          mount_image(ssl_sock, "Developer", signature, %{})
+        end
+      end)
+
+    case result do
+      {:ok, %{"Status" => "Complete"}} ->
+        :ok
+
+      {:ok, not_completed} ->
+        {:error, not_completed}
+
+      error ->
+        error
+    end
+  end
+
+  @doc """
   Mount a developer disk for an iOS 17+ device.
   """
   @spec mount(String.t(), Path.t(), Path.t(), Path.t(), map() | nil) :: :ok | {:error, any()}

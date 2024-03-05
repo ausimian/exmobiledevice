@@ -11,6 +11,7 @@ Current functionality is minimal but includes:
 - WebInspector support - automate browsing sessions without SafariDriver -
   (`ExMobileDevice.WebInspector`)
 - Crash log copying and removal - (`ExMobileDevice.CrashReporter`)
+- Developer Disk mounting - (`ExMobileDevice.ImageMounter`)
 
 Planned for future releases:
 
