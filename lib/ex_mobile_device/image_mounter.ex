@@ -276,6 +276,12 @@ defmodule ExMobileDevice.ImageMounter do
     case :httpc.request(:post, {url, hdrs, content_type, body}, httpc_opts, body_format: :binary) do
       {:ok, {{_, 200, _}, _, <<"STATUS=0&MESSAGE=SUCCESS&REQUEST_STRING=", rest::binary>>}} ->
         {:ok, Plist.decode(rest)["ApImg4Ticket"]}
+
+      {:ok, failure} ->
+        {:error, failure}
+
+      error ->
+        error
     end
   end
 

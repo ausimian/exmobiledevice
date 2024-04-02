@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.13 - 2024-04-02
+
+### Enhancements
+
+- Improve error handling on disk-signing failures.
+
 ## 0.2.12 - 2024-03-06
 
 ### Enhancements
