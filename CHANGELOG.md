@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.14 - 2024-04-03
+
+### Fixes
+
+- Fix bug in disk-signing.
+
 ## 0.2.13 - 2024-04-02
 
 ### Enhancements

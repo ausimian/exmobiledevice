@@ -189,9 +189,10 @@ defmodule ExMobileDevice.ImageMounter do
 
     {:ok, %{"PersonalizationNonce" => nonce}} = query_personalization_nonce(ssl_sock)
 
-    for {<<"Ap,", _::binary>> = k, v} <- persids, reduce: request do
-      acc -> Map.put(acc, k, v)
-    end
+    request =
+      for {<<"Ap,", _::binary>> = k, v} <- persids, reduce: request do
+        acc -> Map.put(acc, k, v)
+      end
 
     board_id = persids["BoardId"]
     chip_id = persids["ChipID"]
