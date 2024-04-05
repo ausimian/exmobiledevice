@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.15 - 2024-04-05
+
+### Fixes
+
+- Fix web session creation when Safari is already running
+
 ## 0.2.14 - 2024-04-03
 
 ### Fixes
