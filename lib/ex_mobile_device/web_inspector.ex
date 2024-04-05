@@ -403,7 +403,7 @@ defmodule ExMobileDevice.WebInspector do
 
       :initialized ->
         if get_in(data.safari, [@wirAutomationAvailabilityKey]) == @wirAutomationAvailable do
-          {:keep_state_and_data, :postpone}
+          {:next_state, :ready, data, :postpone}
         else
           # Start safari if it is not already started
           bundle_key = %{@wirApplicationBundleIdentifierKey => @bundle}
