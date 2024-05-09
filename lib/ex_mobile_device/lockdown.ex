@@ -178,9 +178,12 @@ defmodule ExMobileDevice.Lockdown do
     case Services.rpc(sock(data), "StartSession", Map.take(data.prec, ["SystemBUID", "HostID"])) do
       {:ok, %{"Request" => "StartSession", "EnableSessionSSL" => ssl?, "SessionID" => sid}} ->
         if ssl? do
-          {:ok, sslsock} = ExMobileDevice.Ssl.connect(data.sock, data.prec)
-
-          {:keep_state, %__MODULE__{data | sslsock: sslsock, sid: sid}, {:reply, from, :ok}}
+          case ExMobileDevice.Ssl.connect(data.sock, data.prec) do
+            {:ok, sslsock} ->
+              {:keep_state, %__MODULE__{data | sslsock: sslsock, sid: sid}, {:reply, from, :ok}}
+            error ->
+              {:keep_state_and_data, {:reply, from, error}}
+          end
         else
           {:keep_state, %__MODULE__{data | sid: sid}, {:reply, from, :ok}}
         end
