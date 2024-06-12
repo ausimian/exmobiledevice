@@ -399,4 +399,5 @@ defmodule ExMobileDevice.FileConduit do
 
   defp to_atom(7), do: :badarg
   defp to_atom(8), do: :enoent
+  defp to_atom(10), do: :eacces
 end
