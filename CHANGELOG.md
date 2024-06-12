@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.17 - 2024-06-13
 
 ### Fixes
 
@@ -8,7 +8,7 @@
 
 ## 0.2.16 - 2024-05-09
 
-## Fixes
+### Fixes
 
 - Return error on ssl connection failure in `ExMobileDevice.Lockdown.start_session/1`.
 
