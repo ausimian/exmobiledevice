@@ -281,13 +281,13 @@ defmodule ExMobileDevice.FileConduit do
 
   defp do_rmrf(_, [], []), do: :ok
   defp do_rmrf(sock, [f|fs], dirs) do
-    :ok = do_rm(sock, f)
+    do_rm(sock, f)
     do_rmrf(sock, fs, dirs)
   end
   defp do_rmrf(sock, [], [dir | dirs] = ds) do
     case do_read_dir(sock, dir) do
       {:ok, []} ->
-        :ok = do_rm(sock, dir)
+        do_rm(sock, dir)
         do_rmrf(sock, [], dirs)
       {:ok, entries} ->
         {files, subdirs} =

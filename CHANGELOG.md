@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.18 - 2024-06-20
+
+### Fixes
+
+- Ignore individual errors in recursive file deletion
+
 ## 0.2.17 - 2024-06-13
 
 ### Fixes
