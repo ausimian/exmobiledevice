@@ -210,8 +210,11 @@ defmodule ExMobileDevice.FileConduit do
 
         {:ok, paths}
 
-      {error_code, _} ->
+      {error_code, _} when is_integer(error_code) ->
         {:error, to_atom(error_code)}
+
+      error ->
+        error
     end
   end
 
@@ -239,8 +242,11 @@ defmodule ExMobileDevice.FileConduit do
       {@success, <<handle::unsigned-little-64>>} ->
         {:ok, handle}
 
-      {error_code, _} ->
+      {error_code, _} when is_integer(error_code) ->
         {:error, to_atom(error_code)}
+
+      error ->
+        error
     end
   end
 
@@ -251,8 +257,11 @@ defmodule ExMobileDevice.FileConduit do
       {@success, data} ->
         {:ok, data}
 
-      {error_code, _} ->
+      {error_code, _} when is_integer(error_code) ->
         {:error, to_atom(error_code)}
+
+      error ->
+        error
     end
   end
 
@@ -272,8 +281,11 @@ defmodule ExMobileDevice.FileConduit do
       {@success, <<>>} ->
         :ok
 
-      {error_code, _} ->
+      {error_code, _} when is_integer(error_code) ->
         {:error, to_atom(error_code)}
+
+      error ->
+        error
     end
   end
 
@@ -306,8 +318,11 @@ defmodule ExMobileDevice.FileConduit do
       {@success, ""} ->
         :ok
 
-      {error_code, _} ->
+      {error_code, _} when is_integer(error_code) ->
         {:error, to_atom(error_code)}
+
+      error ->
+        error
     end
   end
 
@@ -400,4 +415,5 @@ defmodule ExMobileDevice.FileConduit do
   defp to_atom(7), do: :badarg
   defp to_atom(8), do: :enoent
   defp to_atom(10), do: :eacces
+  defp to_atom(n) when is_integer(n), do: :unknown
 end

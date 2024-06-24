@@ -40,29 +40,29 @@ defmodule ExMobileDevice.CrashReporter do
   defp copy_files([file | rest], pid, target_dir) do
     target_file = Path.join(target_dir, file)
     with :ok <- File.mkdir_p(Path.dirname(target_file)),
-         {:ok, local} <- File.open(target_file, [:raw, :binary, :write]),
-         {:ok, remote} <- FileConduit.fopen(pid, file) do
-      result = copy_file(pid, remote, local)
-      FileConduit.fclose(pid, remote)
-      File.close(local)
-
-      case result do
-        :ok ->
-          copy_files(rest, pid, target_dir)
-        error ->
-          error
+         {:ok, local} <- File.open(target_file, [:raw, :binary, :write]) do
+      case FileConduit.stat(pid, file) do
+        {:ok, %File.Stat{size: size}} when size > 0 ->
+          case FileConduit.fopen(pid, file) do
+            {:ok, remote} ->
+              copy_file(pid, remote, local, size)
+              FileConduit.fclose(pid, remote)
+            _ ->
+              :ok
+          end
+        _ ->
+          :ok
       end
+      File.close(local)
+      copy_files(rest, pid, target_dir)
     end
   end
 
-  defp copy_file(pid, remote, local) do
-    with {:ok, data} <- FileConduit.fread(pid, remote, @read_size) do
+  defp copy_file(_pid, _remote, _local, 0), do: :ok
+  defp copy_file(pid, remote, local, remaining) do
+    with {:ok, data} <- FileConduit.fread(pid, remote, min(remaining, @read_size)) do
       :ok = IO.binwrite(local, data)
-      if byte_size(data) == @read_size do
-        copy_file(pid, remote, local)
-      else
-        :ok
-      end
+      copy_file(pid, remote, local, remaining - byte_size(data))
     end
   end
 
