@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.19 - 2024-06-24
+
+### Fixes
+
+- Fix error handling in FileConduit so that it passes through socket errors
+- Fix zero-length file handling in CrashReporter
+
 ## 0.2.18 - 2024-06-20
 
 ### Fixes
