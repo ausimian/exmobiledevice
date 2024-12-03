@@ -28,7 +28,7 @@ by adding `exmobiledevice` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:exmobiledevice, "~> 0.2.17"}
+    {:exmobiledevice, "~> 0.2.21"}
   ]
 end
 ```
