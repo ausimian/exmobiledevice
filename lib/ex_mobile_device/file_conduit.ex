@@ -269,7 +269,7 @@ defmodule ExMobileDevice.FileConduit do
     packet = [<<handle::unsigned-little-64>>, data]
 
     with :ok <- send_packet(sock, @op_file_write, packet, @hdr_size + 8),
-         {:ok, <<>>} <- recv_packet(sock) do
+         {num, <<>>} when is_integer(num) <- recv_packet(sock) do
       :ok
     end
   end
