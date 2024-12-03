@@ -66,7 +66,7 @@ defmodule ExMobileDevice.WebInspector do
   @doc """
   Wait for the session to be created.
   """
-  @spec wait_for_session(pid, non_neg_integer() | :infinity) :: :ok | {:error, :failed | :timeout}
+  @spec wait_for_session(:gen_statem.server_ref(), non_neg_integer() | :infinity) :: :ok | {:error, :failed | :timeout}
   def wait_for_session(pid, timeout \\ 5000) do
     deadline =
       if timeout == :infinity do
