@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.22 - 2024-12-03
+
+### Fixes
+
+- Fix restrictive typespec in WebInspector
+- Fix incorrect match in FileConduit.do_write
+
 ## 0.2.19 - 2024-06-24
 
 ### Fixes
