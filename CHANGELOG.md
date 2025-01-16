@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.23 - 2025-01-16
+
+### Fixes
+
+- Updated deps
+
 ## 0.2.22 - 2024-12-03
 
 ### Fixes

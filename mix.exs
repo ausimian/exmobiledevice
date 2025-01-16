@@ -57,7 +57,7 @@ defmodule ExMobileDevice.MixProject do
       {:jason, "~> 1.4"},
       {:uuid, "~> 1.1"},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
-      {:typed_struct, "~> 0.3.0", runtime: false},
+      {:typedstruct, "~> 0.5.0", runtime: false},
       {:credo, "~> 1.7.3", only: [:dev], runtime: false}
     ]
   end
