@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0  - 2025-01-19
+
+### Fixes
+
+- Replace uuid with uniq
+- Replace plist with pealist
+
 ## 0.2.23 - 2025-01-16
 
 ### Fixes
