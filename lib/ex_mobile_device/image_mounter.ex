@@ -7,6 +7,7 @@ defmodule ExMobileDevice.ImageMounter do
 
   alias ExMobileDevice.TaskSupervisor
   alias ExMobileDevice.Services
+  alias Uniq.UUID
 
   @doc """
   Unmount the disk at the specified path.

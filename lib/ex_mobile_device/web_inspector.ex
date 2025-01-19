@@ -19,6 +19,7 @@ defmodule ExMobileDevice.WebInspector do
   use GenStateMachine, restart: :temporary
   use TypedStruct
 
+  alias Uniq.UUID
   require Logger
 
   @doc """

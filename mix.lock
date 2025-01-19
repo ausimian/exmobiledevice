@@ -12,5 +12,5 @@
   "nimble_parsec": {:hex, :nimble_parsec, "1.4.1", "f41275a0354c736db4b1d255b5d2a27c91028e55c21ea3145b938e22649ffa3f", [:mix], [], "hexpm", "605e44204998f138d6e13be366c8e81af860e726c8177caf50067e1b618fe522"},
   "pealist": {:hex, :pealist, "0.1.3", "9c40e8e8d257663534eb48b7d37e7cfe942e8bab6b04a9585d82ebd7f62153a6", [:mix], [], "hexpm", "df1fa6961d557938fba818f233b6567094fc976708354e6af6810cc777f9aed2"},
   "typedstruct": {:hex, :typedstruct, "0.5.3", "d68ae424251a41b81a8d0c485328ab48edbd3858f3565bbdac21b43c056fc9b4", [:make, :mix], [], "hexpm", "b53b8186701417c0b2782bf02a2db5524f879b8488f91d1d83b97d84c2943432"},
-  "uuid": {:hex, :uuid, "1.1.8", "e22fc04499de0de3ed1116b770c7737779f226ceefa0badb3592e64d5cfb4eb9", [:mix], [], "hexpm", "c790593b4c3b601f5dc2378baae7efaf5b3d73c4c6456ba85759905be792f2ac"},
+  "uniq": {:hex, :uniq, "0.6.1", "369660ecbc19051be526df3aa85dc393af5f61f45209bce2fa6d7adb051ae03c", [:mix], [{:ecto, "~> 3.0", [hex: :ecto, repo: "hexpm", optional: true]}], "hexpm", "6426c34d677054b3056947125b22e0daafd10367b85f349e24ac60f44effb916"},
 }

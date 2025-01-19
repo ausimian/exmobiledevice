@@ -55,7 +55,7 @@ defmodule ExMobileDevice.MixProject do
       {:gen_state_machine, "~> 3.0.0"},
       {:pealist, "~> 0.1.3"},
       {:jason, "~> 1.4"},
-      {:uuid, "~> 1.1"},
+      {:uniq, "~> 0.1"},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
       {:typedstruct, "~> 0.5.0", runtime: false},
       {:credo, "~> 1.7.3", only: [:dev], runtime: false}
