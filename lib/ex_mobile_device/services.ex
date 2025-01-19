@@ -36,13 +36,13 @@ defmodule ExMobileDevice.Services do
       ]
 
     with {:ok, reply} <- send_and_receive(socket, plist) do
-      {:ok, Plist.decode(reply)}
+      {:ok, Pealist.decode(reply)}
     end
   end
 
   def rpc(socket, request, props) do
     with {:ok, reply} <- send_and_receive(socket, encode(request, props)) do
-      {:ok, Plist.decode(reply)}
+      {:ok, Pealist.decode(reply)}
     end
   end
 
@@ -52,7 +52,7 @@ defmodule ExMobileDevice.Services do
 
   def recv_plist(socket) do
     with {:ok, data} <- recv_data(socket) do
-      {:ok, Plist.decode(data)}
+      {:ok, Pealist.decode(data)}
     end
   end
 

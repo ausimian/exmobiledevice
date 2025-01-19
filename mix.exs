@@ -53,7 +53,7 @@ defmodule ExMobileDevice.MixProject do
   defp deps do
     [
       {:gen_state_machine, "~> 3.0.0"},
-      {:plist, "~> 0.0.7"},
+      {:pealist, "~> 0.1.3"},
       {:jason, "~> 1.4"},
       {:uuid, "~> 1.1"},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},

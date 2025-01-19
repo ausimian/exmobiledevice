@@ -77,7 +77,7 @@ defmodule ExMobileDevice.Muxd.Connection do
 
     case Socket.send_and_recv(data.muxd, msg, 0) do
       {:ok, %{"PairRecordData" => record}} ->
-        {:keep_state_and_data, {:reply, from, {:ok, Plist.decode(record)}}}
+        {:keep_state_and_data, {:reply, from, {:ok, Pealist.decode(record)}}}
 
       {:ok, _} ->
         {:keep_state_and_data, {:reply, from, {:error, :enoent}}}

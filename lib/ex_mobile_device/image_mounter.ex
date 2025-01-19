@@ -34,7 +34,7 @@ defmodule ExMobileDevice.ImageMounter do
   def fetch_manifest_from_tss(udid, build_manifest_path) do
     run_in_task(fn ->
       {:ok, ssl_sock} = Services.connect(udid, @service)
-      get_manifest_from_tss(ssl_sock, Plist.decode(File.read!(build_manifest_path)))
+      get_manifest_from_tss(ssl_sock, Pealist.decode(File.read!(build_manifest_path)))
     end)
   end
 
@@ -86,7 +86,7 @@ defmodule ExMobileDevice.ImageMounter do
               {:ok, ssl_sock} = Services.connect(udid, @service)
 
               {:ok, manifest} =
-                get_manifest_from_tss(ssl_sock, Plist.decode(File.read!(build_manifest_path)))
+                get_manifest_from_tss(ssl_sock, Pealist.decode(File.read!(build_manifest_path)))
 
               {:ok, ssl_sock, manifest}
           end
@@ -168,7 +168,7 @@ defmodule ExMobileDevice.ImageMounter do
     :ok = :ssl.setopts(ssl_sock, packet: 4)
     {:ok, reply} = :ssl.recv(ssl_sock, 0)
 
-    case Plist.decode(reply) do
+    case Pealist.decode(reply) do
       %{"Status" => "Complete"} ->
         :ok
 
@@ -276,7 +276,7 @@ defmodule ExMobileDevice.ImageMounter do
 
     case :httpc.request(:post, {url, hdrs, content_type, body}, httpc_opts, body_format: :binary) do
       {:ok, {{_, 200, _}, _, <<"STATUS=0&MESSAGE=SUCCESS&REQUEST_STRING=", rest::binary>>}} ->
-        {:ok, Plist.decode(rest)["ApImg4Ticket"]}
+        {:ok, Pealist.decode(rest)["ApImg4Ticket"]}
 
       {:ok, failure} ->
         {:error, failure}

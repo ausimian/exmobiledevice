@@ -42,7 +42,7 @@ defmodule ExMobileDevice.Muxd.Socket do
     Stream.unfold(bytes, fn
       <<sz::little-32, @protocol_version_plist::little-32, @msgtype_plist::little-32,
         _::little-32, msg::binary-size(sz - 16), rest::binary>> ->
-        {{:parsed, Plist.decode(msg)}, rest}
+        {{:parsed, Pealist.decode(msg)}, rest}
 
       rest when is_binary(rest) ->
         {{:partial, rest}, nil}
@@ -79,7 +79,7 @@ defmodule ExMobileDevice.Muxd.Socket do
     with {:ok, <<size::little-32>>} <- :gen_tcp.recv(socket, 4),
          {:ok, <<1::little-32, 8::little-32, ^tag::little-32, response::binary>>} <-
            :gen_tcp.recv(socket, size - 4) do
-      {:ok, Plist.decode(response)}
+      {:ok, Pealist.decode(response)}
     end
   end
 

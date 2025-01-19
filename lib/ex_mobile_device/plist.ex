@@ -2,8 +2,8 @@ defmodule ExMobileDevice.Plist do
   @moduledoc false
 
   def encode(data), do: to_plist(data)
-  def decode(<<"bplist00", _::binary>> = data), do: Elixir.Plist.decode(data)
-  def decode(data), do: Plist.decode(data)
+  def decode(<<"bplist00", _::binary>> = data), do: Elixir.Pealist.decode(data)
+  def decode(data), do: Pealist.decode(data)
 
   defp to_plist(v) do
     [~s(<plist version="1.0">), to_plist_value(v), "</plist>"]
